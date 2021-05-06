@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Octagon.dir/main.cpp.o -o Octagon 

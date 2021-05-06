@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/artur/cpp_projects/Octagon/Octagon.h
+vector
+-
+math.h
+-
+algorithm
+-
+
+/home/artur/cpp_projects/Octagon/main.cpp
+iostream
+-
+Octagon.h
+/home/artur/cpp_projects/Octagon/Octagon.h
+

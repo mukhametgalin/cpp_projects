@@ -1,0 +1,3 @@
+/home/artur/cpp_projects/Octagon/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/artur/cpp_projects/Octagon/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/artur/cpp_projects/Octagon/cmake-build-debug/CMakeFiles/Octagon.dir
