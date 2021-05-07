@@ -3,4 +3,5 @@
 
 CMakeFiles/Octagon.dir/main.cpp.o: ../Octagon.h
 CMakeFiles/Octagon.dir/main.cpp.o: ../main.cpp
+CMakeFiles/Octagon.dir/main.cpp.o: ../test_octagon.h
 

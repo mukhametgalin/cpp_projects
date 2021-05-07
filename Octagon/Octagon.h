@@ -1,6 +1,11 @@
+
+#ifndef OCTAGON__OCTAGON_H_
+#define OCTAGON__OCTAGON_H_
+
 #include <vector>
 #include <math.h>
 #include <algorithm>
+#include <iostream>
 
 class Point {
  public:
@@ -12,6 +17,8 @@ class Point {
 
 };
 
+struct EmptyOctagonError {};
+
 class Octagon {
   friend
   Octagon* intersection(const Octagon&, const Octagon&);
@@ -19,8 +26,11 @@ class Octagon {
   friend
   bool hasIntersection(const Octagon&, const Octagon&);
 
-private:
-  std::vector<int> l{std::vector<int>(8, 0)};
+  friend
+  void  constructorsTest();
+
+ private:
+  std::vector<int> l;
 
   static const std::vector<std::pair<int, int>> c;
 
@@ -48,6 +58,11 @@ private:
     }
   }
 
+  void emptyCheck() const {
+    if (empty())
+      throw EmptyOctagonError();
+  }
+
  public:
 
   static const int size = 8;
@@ -58,6 +73,8 @@ private:
   Octagon(const Octagon& other) : l(other.l) {}
 
   Octagon(std::initializer_list<Point> list) {
+    l.resize(size);
+
     auto first = *list.begin();
 
     for (int i = 0 ; i < size; ++i) {
@@ -65,17 +82,37 @@ private:
     }
 
     for (auto i : list) {
-      for (int j = 0; j < size; ++j) {
-        std::cout << l[j] << std::endl;
-      }
-      std::cout << std::endl;
       this->coverPoint(i);
     }
-
   }
+
+  Octagon(std::vector<Point> list) { // if we need to construct octagon from implicit list of Points
+    l.resize(size);
+    auto first = *list.begin();
+
+    for (int i = 0 ; i < size; ++i) {
+      l[i] = c[i].first * first.x + c[i].second * first.y;
+    }
+
+    for (auto i : list) {
+      this->coverPoint(i);
+    }
+  }
+
+  Octagon(std::initializer_list<int> limits) : l(limits) {}
+
+  Octagon(int limit0, int limit1, int limit2, int limit3,
+          int limit4, int limit5, int limit6, int limit7) :
+      l({limit0, limit1, limit2, limit3, limit4, limit5, limit6, limit7}) {
+    normalize();
+  }
+
 
   // operators:
   bool operator==(const Octagon& other) const {
+    if (empty() || other.empty())
+      return false;
+
     for (int i = 0; i < size; ++i) {
       if (l[i] != other.l[i]) {
         return false;
@@ -86,6 +123,8 @@ private:
 
   // describing functions:
   int limit(int dir) const {
+    emptyCheck();
+
     return l[dir - 1];
   }
 
@@ -104,6 +143,8 @@ private:
   }*/
 
   Point vertex(int dir) const {
+    emptyCheck();
+
     Point answer = {0, 0};
     dir = (dir + 1) % size;
     int other_dir = (dir + 1) % size;
@@ -121,6 +162,9 @@ private:
   }
 
   int isPointInside(const Point& point) const {
+    if (empty())
+      return false;
+
     for (int i = 0; i < size; ++i) {
       int value = c[i].first * point.x + c[i].second * point.y;
       if (value > l[i])
@@ -141,12 +185,18 @@ private:
 
   // modifying functions:
   void coverPoint(const Point& point) {
+    if (empty()) {
+      *this = Octagon({point});
+      return;
+    }
     for (int i = 0; i < size; ++i) {
       l[i] = std::max(l[i], c[i].first * point.x + c[i].second * point.y);
     }
   }
 
   void inflate(int inflateParam) {
+    emptyCheck();
+
     if (inflateParam == 0)
       return;
 
@@ -157,6 +207,14 @@ private:
       }
       l[i] += d;
     }
+  }
+
+  bool empty() const {
+    return l.size() != static_cast<size_t>(size);
+  }
+
+  void clear() {
+    l.clear();
   }
 };
 
@@ -175,6 +233,9 @@ bool hasIntersection(const Octagon& first, const Octagon& second) {
 }
 
 Octagon* intersection(const Octagon& first, const Octagon& second) {
+  first.emptyCheck();
+  second.emptyCheck();
+
   if (!hasIntersection(first, second))
     return nullptr;
 
@@ -185,3 +246,5 @@ Octagon* intersection(const Octagon& first, const Octagon& second) {
   }
   return answer;
 }
+
+#endif //OCTAGON__OCTAGON_H_

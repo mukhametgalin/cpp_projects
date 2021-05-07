@@ -13,10 +13,26 @@ math.h
 -
 algorithm
 -
+iostream
+-
 
 /home/artur/cpp_projects/Octagon/main.cpp
 iostream
 -
 Octagon.h
 /home/artur/cpp_projects/Octagon/Octagon.h
+test_octagon.h
+/home/artur/cpp_projects/Octagon/test_octagon.h
+
+/home/artur/cpp_projects/Octagon/test_octagon.h
+Octagon.h
+/home/artur/cpp_projects/Octagon/Octagon.h
+cassert
+-
+chrono
+-
+thread
+-
+random
+-
 
